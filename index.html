@@ -3,72 +3,124 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-<title>Palette Widget</title>
+<title>Custom Palette Widget</title>
 
 <style>
-    body{
-        margin:0;
-        padding:0;
-        background:transparent;
+  body {
+    margin: 0;
+    padding: 16px;
+    background: transparent;
+    font-family: Inter, Arial, sans-serif;
+  }
 
-        display:flex;
-        justify-content:center;
-        align-items:center;
+  .palette-widget {
+    width: 100%;
+    max-width: 1100px;
+    margin: auto;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    background: #ffffff;
+  }
 
-        overflow:hidden;
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    min-height: 220px;
+  }
+
+  .color {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 18px;
+    color: white;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+
+  .color:hover {
+    filter: brightness(1.08);
+    transform: translateY(-4px);
+  }
+
+  .name {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+
+  .hex {
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    opacity: 0.9;
+  }
+
+  .footer {
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .copied {
+    font-weight: 600;
+    color: #26413c;
+  }
+
+  @media (max-width: 700px) {
+    .palette {
+      grid-template-columns: repeat(2, 1fr);
     }
-
-    /* Make widget wider */
-    .widget-container{
-        width:1000px;
-        max-width:100%;
-    }
-
-    /* Hide "View on Coolors" */
-    a[href*="coolors.co"]{
-        display:none !important;
-    }
-
-    iframe{
-        width:100% !important;
-    }
+  }
 </style>
 </head>
 
 <body>
 
-<div class="widget-container">
+<div class="palette-widget">
+  <div class="palette" id="palette"></div>
 
-<script src="https://coolors.co/palette-widget/widget.js"></script>
-
-<script data-id="09551345545428966">
-new CoolorsPaletteWidget(
-    "09551345545428966",
-    [
-        "b9d5bc",
-        "90a9b7",
-        "26413c",
-        "738678",
-        "917e73",
-        "c17c74"
-    ]
-);
-</script>
-
+  <div class="footer">
+    <span>Click any color to copy its hex code</span>
+    <span class="copied" id="copiedText"></span>
+  </div>
 </div>
 
 <script>
-/* Remove Coolors footer after load */
-setTimeout(() => {
-    document.querySelectorAll("a").forEach(el => {
-        if(el.innerText.toLowerCase().includes("view on coolors")){
-            el.remove();
-        }
-    });
-}, 1000);
+const colors = [
+  { name: "Celadon", hex: "#b9d5bc" },
+  { name: "Cool Steel", hex: "#90a9b7" },
+  { name: "Dark Slate Grey", hex: "#26413c" },
+  { name: "Dusty Olive", hex: "#738678" },
+  { name: "Taupe", hex: "#917e73" },
+  { name: "Dusty Rose", hex: "#c17c74" }
+];
+
+const palette = document.getElementById("palette");
+const copiedText = document.getElementById("copiedText");
+
+colors.forEach(color => {
+  const block = document.createElement("div");
+  block.className = "color";
+  block.style.backgroundColor = color.hex;
+
+  block.innerHTML = `
+    <div class="name">${color.name}</div>
+    <div class="hex">${color.hex}</div>
+  `;
+
+  block.addEventListener("click", async () => {
+    await navigator.clipboard.writeText(color.hex);
+    copiedText.textContent = `${color.hex} copied`;
+    setTimeout(() => copiedText.textContent = "", 1800);
+  });
+
+  palette.appendChild(block);
+});
 </script>
 
-    
 </body>
 </html>
