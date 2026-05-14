@@ -1,32 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coolors Palette Widget</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    body {
-      margin: 0;
-      padding: 16px;
-      background: transparent;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+<title>Palette Widget</title>
+
+<style>
+    body{
+        margin:0;
+        padding:0;
+        background:transparent;
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
+        overflow:hidden;
     }
-  </style>
+
+    /* Make widget wider */
+    .widget-container{
+        width:1000px;
+        max-width:100%;
+    }
+
+    /* Hide "View on Coolors" */
+    a[href*="coolors.co"]{
+        display:none !important;
+    }
+
+    iframe{
+        width:100% !important;
+    }
+</style>
 </head>
 
 <body>
-  <!-- Coolors Palette Widget -->
-  <script src="https://coolors.co/palette-widget/widget.js"></script>
 
-  <script data-id="09551345545428966">
-    new CoolorsPaletteWidget(
-      "09551345545428966",
-      ["b9d5bc", "90a9b7", "26413c", "738678", "917e73", "c17c74"]
-    );
-  </script>
+<div class="widget-container">
+
+<script src="https://coolors.co/palette-widget/widget.js"></script>
+
+<script data-id="09551345545428966">
+new CoolorsPaletteWidget(
+    "09551345545428966",
+    [
+        "b9d5bc",
+        "90a9b7",
+        "26413c",
+        "738678",
+        "917e73",
+        "c17c74"
+    ]
+);
+</script>
+
+</div>
+
+<script>
+/* Remove Coolors footer after load */
+setTimeout(() => {
+    document.querySelectorAll("a").forEach(el => {
+        if(el.innerText.toLowerCase().includes("view on coolors")){
+            el.remove();
+        }
+    });
+}, 1000);
+</script>
+
 </body>
 </html>
