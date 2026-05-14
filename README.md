@@ -1,1 +1,1 @@
-# notion-palette-widget
+# Notion Palette Widget
